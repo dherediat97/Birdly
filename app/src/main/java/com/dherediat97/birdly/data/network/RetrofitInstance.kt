@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://xeno-canto.org/api/"
+    private const val BASE_URL = "https://xeno-canto.org/api/2/"
 
     private val logging = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -23,7 +23,7 @@ object RetrofitInstance {
             .build()
     }
 
-    val birdsService: BirdService by lazy {
-        retrofit.create(BirdService::class.java)
+    val birdsService: BirdRecordingService by lazy {
+        retrofit.create(BirdRecordingService::class.java)
     }
 }
