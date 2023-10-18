@@ -1,6 +1,7 @@
 package com.dherediat97.birdly.ui.view
 
 import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.dherediat97.birdly.R
 import com.dherediat97.birdly.databinding.FragmentMapBinding
-import com.dherediat97.birdly.ui.viewmodel.NearBirdsViewModel
+import com.dherediat97.birdly.databinding.FragmentRecentRecordItemBinding
+import com.dherediat97.birdly.ui.viewmodel.RecentBirdsViewModel
+import com.dherediat97.birdly.ui.viewmodel.SoundRecordedViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.osmdroid.api.IMapController
@@ -26,7 +29,7 @@ import org.osmdroid.views.overlay.Marker
 class MapFragment : Fragment() {
 
     private var _binding: FragmentMapBinding? = null
-    private val nearBirdsViewModel: NearBirdsViewModel by activityViewModel()
+    private val soundRecordedViewModel: SoundRecordedViewModel by activityViewModel()
 
     private lateinit var mMap: MapView
     private lateinit var controller: IMapController
@@ -38,7 +41,7 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMapBinding.inflate(inflater, container, false)
-        nearBirdsViewModel.fetchBirdSound(178261)
+        soundRecordedViewModel.fetchBirdSound(178261)
         Configuration.getInstance().load(
             context,
             context?.getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE)
@@ -50,6 +53,9 @@ class MapFragment : Fragment() {
         controller.animateTo(GeoPoint(37.8915500, -4.7727500))
         controller.zoomTo(14, 1600)
         mMap.setMultiTouchControls(true)
+        binding.searchBirdFAB.setOnClickListener {
+            startActivity(Intent(requireContext(), RandomRecordedSoundsFragment::class.java))
+        }
         return binding.root
     }
 
@@ -57,13 +63,21 @@ class MapFragment : Fragment() {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                nearBirdsViewModel.uiState.collect {
-                    val soundRecorded = Marker(mMap)
-                    soundRecorded.position = GeoPoint(it.record.lat, it.record.lng)
-                    soundRecorded.title =
-                        "${it.record.en}\nEncontrado en: ${it.record.loc} por ${it.record.rec}"
-                    if (it.record.id != 0)
-                        mMap.overlays.add(soundRecorded)
+                soundRecordedViewModel.uiState.collect { soundRecorded ->
+                    val soundRecordedMarker = Marker(mMap)
+                    soundRecordedMarker.position =
+                        GeoPoint(soundRecorded.record.lat, soundRecorded.record.lng)
+                    soundRecordedMarker.setOnMarkerClickListener { _, _ ->
+                        val recordedSoundDetailsFragment =
+                            RecordedSoundDetailsFragment(soundRecorded.record)
+                        recordedSoundDetailsFragment.show(
+                            parentFragmentManager,
+                            RecordedSoundDetailsFragment.TAG
+                        )
+                        return@setOnMarkerClickListener true
+                    }
+                    if (soundRecorded.record.id != 0)
+                        mMap.overlays.add(soundRecordedMarker)
                 }
             }
         }
