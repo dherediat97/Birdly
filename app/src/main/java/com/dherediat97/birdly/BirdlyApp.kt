@@ -7,6 +7,9 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class BirdlyApp: Application() {
+
+
+
     override fun onCreate() {
         super.onCreate()
         startKoin {
@@ -14,5 +17,11 @@ class BirdlyApp: Application() {
             modules(repositoriesModule)
             modules(viewModelsModule)
         }
+    }
+
+    companion object{
+        //region Constants
+        const val baseURLSound = "https://xeno-canto.org/"
+        //endregion
     }
 }

@@ -3,6 +3,7 @@
     <style name="Base.Theme.Birdly" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/primary</item>
-        <item name="android:statusBarColor">@color/primary</item>
+        <item name="colorAccent">@color/secondary</item>
+        <item name="colorSecondary">@color/secondary</item>
     </style>
 </resources>
