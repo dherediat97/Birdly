@@ -37,7 +37,8 @@
                     android:id="@+id/birdSpecieIV"
                     android:layout_width="match_parent"
                     android:layout_height="194dp"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -47,11 +48,11 @@
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/btnPlayRecordedSoundFAB"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:src="@drawable/ic_play"
-                        android:tint="@color/primary"
-                        app:elevation="0dp" />
+                        app:backgroundTint="@color/secondary"
+                        app:tint="@color/white" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -67,12 +68,12 @@
                             tools:text="Gorrión común" />
 
                         <TextView
-                            android:id="@+id/birdGroupTV"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/birdRecorderNameTV"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorSecondary"
-                            tools:text="Jilguero" />
+                            tools:text="Paco Morales" />
 
                         <com.google.android.material.slider.Slider
                             android:id="@+id/soundRecordedPB"
@@ -81,7 +82,8 @@
                             android:indeterminate="false"
                             android:max="100"
                             android:progress="80"
-                            android:progressTint="@color/secondary" />
+                            android:progressTint="@color/secondary"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                 </LinearLayout>

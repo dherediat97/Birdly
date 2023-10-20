@@ -7,5 +7,5 @@ class BirdsRepository {
     private val recordsService = RetrofitInstance.birdsService
 
     suspend fun getSingleRecord(id: Int) = recordsService.getSingleRecord(id)
-    suspend fun getRecentRecords() = recordsService.getRecentRecords("2023","10")
+    suspend fun getMultipleRecords(url:String) = recordsService.getMultipleRecords(url)
 }
